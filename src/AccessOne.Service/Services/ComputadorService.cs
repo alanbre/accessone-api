@@ -2,13 +2,14 @@
 using AccessOne.Domain.Models;
 using AccessOne.Domain.Interfaces;
 using AutoMapper;
-using FluentValidation;
 using System;
 using System.Collections.Generic;
+using AccessOne.Domain.Commands;
+using AccessOne.Service.Interfaces;
 
 namespace AccessOne.Service.Services
 {
-    public class ComputadorService<T> : IService<T> where T : Entity
+    public class ComputadorService : IComputadorService
     {
         private readonly IMapper _mapper;
         private readonly IComputadorRepository _computadorRepository;
@@ -21,43 +22,37 @@ namespace AccessOne.Service.Services
             Bus = bus;
         }
 
-        public Computador Post(Computador obj)
+        public IEnumerable<Computador> Select()
         {
-            var postCommand = _mapper.Map<Re>
+            return _computadorRepository.Select();
         }
 
-        public T Put<V>(T obj) where V : AbstractValidator<T>
+        public Computador Select(Guid id)
         {
-            Validate(obj, Activator.CreateInstance<V>());
-
-            repository.Update(obj);
-            return obj;
+            return _computadorRepository.Select(id);
         }
 
-        public void Delete(int id)
+        public void Register(Computador obj)
         {
-            if (id == 0)
-                throw new ArgumentException("O id não pode ser zero.");
-
-            repository.Delete(id);
+            var postCommand = _mapper.Map<RegisterNewComputadorCommand>(obj);
+            Bus.SendCommand(postCommand);
         }
 
-        public IList<T> Get() => repository.Select();
-
-        public T Get(int id)
+        public void Update(Computador obj)
         {
-            if (id == 0)
-                throw new ArgumentException("O id não pode ser zero.");
-
-            return repository.Select(id);
+            var updateCommand = _mapper.Map<UpdateComputadorCommand>(obj);
+            Bus.SendCommand(updateCommand);
         }
 
-        private void Validate(T obj, AbstractValidator<T> validator)
+        public void Remove(Guid id)
         {
-            if (obj == null)
-                throw new Exception("Registros não detectados!");
+            var removeCommand = new RemoveComputadorCommand(id);
+            Bus.SendCommand(removeCommand);
+        }
 
-            validator.ValidateAndThrow(obj);
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

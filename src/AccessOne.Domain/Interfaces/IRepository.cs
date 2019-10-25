@@ -1,19 +1,20 @@
-﻿using AccessOne.Domain.Models;
-using System.Collections.Generic;
+﻿using AccessOne.Domain.Core.Models;
+using System;
+using System.Linq;
 
 namespace AccessOne.Domain.Interfaces
 {
-    public interface IRepository<T> where T : Entity
+    public interface IRepository<TEntity> : IDisposable where TEntity : class
     {
-        void Insert(T obj);
+        void Insert(TEntity obj);
 
-        void Update(T obj);
+        void Update(TEntity obj);
 
-        void Delete(int id);
+        void Delete(Guid id);
 
-        T Select(int id);
+        TEntity Select(Guid id);
 
-        IList<T> Select();
+        IQueryable<TEntity> Select();
     }
 }
 

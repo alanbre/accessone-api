@@ -1,12 +1,12 @@
-﻿using AccessOne.Domain.Core.Models;
+﻿using AccessOne.Domain.Core.Events;
+using AccessOne.Domain.Models;
 using System;
-using System.Collections.Generic;
 
-namespace AccessOne.Domain.Models
+namespace AccessOne.Domain.Events
 {
-    public class Computador : Entity
+    public class ComputadorUpdatedEvent : Event
     {
-        public Computador(Guid id, string nome, string ip, int disco, int memoria, Grupo grupo)
+        public ComputadorUpdatedEvent(Guid id, string nome, string ip, int disco, int memoria, Grupo grupo)
         {
             Id = id;
             Nome = nome;
@@ -16,13 +16,11 @@ namespace AccessOne.Domain.Models
             Grupo = grupo;
         }
 
-        protected Computador() { }
-
+        public Guid Id { get; set; }
         public string Nome { get; private set; }
         public string Ip { get; private set; }
         public int Disco { get; private set; }
         public int Memoria { get; private set; }
         public Grupo Grupo { get; private set; }
-        public ICollection<Comando> Comandos { get; private set; }
     }
 }

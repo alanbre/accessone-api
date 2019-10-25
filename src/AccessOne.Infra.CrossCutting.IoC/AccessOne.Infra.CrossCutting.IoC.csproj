@@ -5,16 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Validator\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AccessOne.Domain\AccessOne.Domain.csproj" />
+    <ProjectReference Include="..\AccessOne.Infra.CrossCutting.Bus\AccessOne.Infra.CrossCutting.Bus.csproj" />
     <ProjectReference Include="..\AccessOne.Infra.Data\AccessOne.Infra.Data.csproj" />
+    <ProjectReference Include="..\AccessOne.Service\AccessOne.Service.csproj" />
   </ItemGroup>
 
 </Project>

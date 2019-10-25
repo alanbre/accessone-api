@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AccessOne.Domain.Core.Models;
+using System;
 
 namespace AccessOne.Domain.Models
 {

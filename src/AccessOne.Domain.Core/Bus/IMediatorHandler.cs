@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AccessOne.Domain.Core.Commands;
-using Equinox.Domain.Core.Events;
+using AccessOne.Domain.Core.Events;
 
 
 namespace AccessOne.Domain.Core.Bus

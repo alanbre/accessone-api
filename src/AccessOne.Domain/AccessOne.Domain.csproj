@@ -12,4 +12,8 @@
     <ProjectReference Include="..\AccessOne.Domain.Core\AccessOne.Domain.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EventHandlers\" />
+  </ItemGroup>
+
 </Project>

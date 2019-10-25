@@ -1,7 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AccessOne.Domain.Models
+namespace AccessOne.Domain.Core.Models
 {
     public abstract class Entity
     {
@@ -12,17 +11,17 @@ namespace AccessOne.Domain.Models
             var compareTo = obj as Entity;
 
             if (ReferenceEquals(this, compareTo)) return true;
-            if (ReferenceEquals(null, compareTo)) return false;
+            if (compareTo is null) return false;
 
             return Id.Equals(compareTo.Id);
         }
 
         public static bool operator ==(Entity a, Entity b)
         {
-            if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
+            if (a is null && b is null)
                 return true;
 
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            if (a is null || b is null)
                 return false;
 
             return a.Equals(b);

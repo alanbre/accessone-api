@@ -1,19 +1,19 @@
-﻿using AccessOne.Domain.Models;
+﻿using AccessOne.Domain.Core.Models;
 using FluentValidation;
 using System.Collections.Generic;
 
 namespace AccessOne.Domain.Interfaces
 {
-    public interface IService<T> where T : Entity
+    public interface IService<TEntity> where TEntity : Entity
     {
-        T Post<V>(T obj) where V : AbstractValidator<T>;
+        TEntity Post<V>(TEntity obj) where V : AbstractValidator<TEntity>;
 
-        T Put<V>(T obj) where V : AbstractValidator<T>;
+        TEntity Put<V>(TEntity obj) where V : AbstractValidator<TEntity>;
 
         void Delete(int id);
 
-        T Get(int id);
+        TEntity Get(int id);
 
-        IList<T> Get();
+        IList<TEntity> Get();
     }
 }

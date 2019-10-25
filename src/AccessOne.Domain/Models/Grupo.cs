@@ -1,4 +1,6 @@
-﻿namespace AccessOne.Domain.Models
+﻿using AccessOne.Domain.Core.Models;
+
+namespace AccessOne.Domain.Models
 {
     public class Grupo : Entity
     {
