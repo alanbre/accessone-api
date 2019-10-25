@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AccessOne.Domain.Core.Bus;
+using AccessOne.Domain.Core.Notifications;
+using AccessOne.Service.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,13 +13,23 @@ namespace AccessOne.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ComputadorController : ControllerBase
+    public class ComputadorController : ApiController
     {
+        private readonly IComputadorService _computadorService;
+
+        public ComputadorController(
+            IComputadorService computadorService,
+            INotificationHandler<DomainNotification> notifications,
+            IMediatorHandler mediator) : base(notifications, mediator)
+        {
+            _computadorService = computadorService;
+        }
+
         // GET: api/Computador
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            return Response(_computadorService.Select());
         }
 
         // GET: api/Computador/5
