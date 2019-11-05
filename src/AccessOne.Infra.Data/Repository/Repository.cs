@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AccessOne.Domain.Interfaces;
 using AccessOne.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -17,36 +19,38 @@ namespace AccessOne.Infra.Data.Repository
             DbSet = Db.Set<TEntity>();
         }
 
-        public virtual void Insert(TEntity obj)
+        public virtual async Task<List<TEntity>> SelectAsync()
         {
-            DbSet.Add(obj);
+            return await DbSet.ToListAsync();
         }
 
-        public void Update(TEntity obj)
+        public virtual async Task<TEntity> SelectAsync(Guid id)
+        {
+            return await DbSet.FindAsync(id);
+        }
+
+        public virtual async Task<TEntity> InsertAsync(TEntity obj)
+        {
+            await DbSet.AddAsync(obj);
+            await Db.SaveChangesAsync();
+            return obj;
+        }
+
+        public virtual async Task<TEntity> UpdateAsync(TEntity obj)
         {
             DbSet.Update(obj);
+            await Db.SaveChangesAsync();
+            return obj;
         }
 
-        public void Delete(Guid id)
+        public virtual async Task<bool> DeleteAsync(Guid id)
         {
-            DbSet.Remove(DbSet.Find(id));
-        }
+            var obj = await SelectAsync(id);
+            if(obj == null) return false;
 
-        public IQueryable<TEntity> Select()
-        {
-            return DbSet;
+            DbSet.Remove(obj);
+            return await Db.SaveChangesAsync() > 0;
         }
-
-        public virtual TEntity Select(Guid id)
-        {
-            return DbSet.Find(id);
-        }
-
-        public int SaveChanges()
-        {
-            return Db.SaveChanges();
-        }
-
         public void Dispose()
         {
             Db.Dispose();

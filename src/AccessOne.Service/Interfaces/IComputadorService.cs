@@ -1,15 +1,16 @@
 ﻿using AccessOne.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AccessOne.Service.Interfaces
 {
     public interface IComputadorService : IDisposable
     {
-        void Register(Computador computador);
-        IEnumerable<Computador> Select();
-        Computador Select(Guid id);
-        void Update(Computador computador);
-        void Remove(Guid id);
+        Task<List<Computador>> SelectAsync();
+        Task<Computador> SelectAsync(Guid id);
+        Task<Computador> InsertAsync(Computador computador);
+        Task<Computador> UpdateAsync(Computador computador);
+        Task<bool> DeleteAsync(Guid id);
     }
 }

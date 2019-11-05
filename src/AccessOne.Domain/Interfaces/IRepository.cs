@@ -1,20 +1,21 @@
-﻿using AccessOne.Domain.Core.Models;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AccessOne.Domain.Interfaces
 {
     public interface IRepository<TEntity> : IDisposable where TEntity : class
     {
-        void Insert(TEntity obj);
+        Task<List<TEntity>> SelectAsync();
+        Task<TEntity> SelectAsync(Guid id);
+        Task<TEntity> InsertAsync(TEntity obj);
 
-        void Update(TEntity obj);
+        Task<TEntity> UpdateAsync(TEntity obj);
 
-        void Delete(Guid id);
+        Task<bool> DeleteAsync(Guid id);
 
-        TEntity Select(Guid id);
 
-        IQueryable<TEntity> Select();
     }
 }
 

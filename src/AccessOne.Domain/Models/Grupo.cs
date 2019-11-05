@@ -1,10 +1,19 @@
-﻿using AccessOne.Domain.Core.Models;
+﻿using System;
+using AccessOne.Domain.Core.Models;
 
 namespace AccessOne.Domain.Models
 {
     public class Grupo : Entity
     {
-        public string Nome { get; set; }
+        public Grupo(Guid id, string nome)
+        {
+            Nome = nome;
+            Id = id;
+        }
+
+        protected Grupo() {}
+
+        public string Nome { get; protected set; }
     }
 }
 

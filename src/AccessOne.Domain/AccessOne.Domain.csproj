@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\AccessOne.Domain.Core\AccessOne.Domain.Core.csproj" />
   </ItemGroup>
 

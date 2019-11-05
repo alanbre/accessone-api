@@ -1,6 +1,10 @@
-﻿using AccessOne.Domain.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AccessOne.Domain.Interfaces;
 using AccessOne.Domain.Models;
 using AccessOne.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccessOne.Infra.Data.Repository
 {
@@ -9,7 +13,17 @@ namespace AccessOne.Infra.Data.Repository
         public ComputadorRepository(AccessOneContext context)
             : base(context)
         {
+            
+        }
 
+        public override async Task<List<Computador>> SelectAsync()
+        {
+            return await DbSet.Include(c => c.Grupo).ToListAsync();
+        }
+
+        public override async Task<Computador> SelectAsync(Guid id)
+        {
+            return await DbSet.Include(c => c.Grupo).FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

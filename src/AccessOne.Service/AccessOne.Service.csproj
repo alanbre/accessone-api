@@ -5,16 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="AutoMapper\" />
     <Folder Include="Validator\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AccessOne.Domain\AccessOne.Domain.csproj" />
     <ProjectReference Include="..\AccessOne.Infra.Data\AccessOne.Infra.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

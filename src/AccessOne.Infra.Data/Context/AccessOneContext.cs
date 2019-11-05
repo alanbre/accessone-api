@@ -23,12 +23,11 @@ namespace AccessOne.Infra.Data.Context
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(_env.ContentRootPath)
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{_env.EnvironmentName}.json")
                 .Build();
 
 
-            optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
-            //optionsBuilder.UseSqlServer("Server=tcp:instituto.database.windows.net,1433;Initial Catalog=instituto;Persist Security Info=False;User ID={your_username};Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnectionb"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

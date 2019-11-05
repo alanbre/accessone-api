@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AccessOne.Domain\AccessOne.Domain.csproj" />
-    <ProjectReference Include="..\AccessOne.Infra.CrossCutting.Bus\AccessOne.Infra.CrossCutting.Bus.csproj" />
     <ProjectReference Include="..\AccessOne.Infra.Data\AccessOne.Infra.Data.csproj" />
     <ProjectReference Include="..\AccessOne.Service\AccessOne.Service.csproj" />
   </ItemGroup>

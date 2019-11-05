@@ -1,60 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AccessOne.Domain.Core.Bus;
-using AccessOne.Domain.Core.Notifications;
+﻿using AccessOne.Domain.Models;
 using AccessOne.Service.Interfaces;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+using AccessOne.Service.Requests;
+using AccessOne.Service.Responses;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AccessOne.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ComputadorController : ApiController
+    public class ComputadorController : ControllerBase
     {
         private readonly IComputadorService _computadorService;
+        private readonly IMapper _mapper;
 
-        public ComputadorController(
-            IComputadorService computadorService,
-            INotificationHandler<DomainNotification> notifications,
-            IMediatorHandler mediator) : base(notifications, mediator)
+        public ComputadorController(IComputadorService computadorService, IMapper mapper)
         {
             _computadorService = computadorService;
+            _mapper = mapper;
         }
 
-        // GET: api/Computador
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Response(_computadorService.Select());
+            var computadores = await _computadorService.SelectAsync();
+            var computadoresResponse = _mapper.Map<List<Computador>, List<ComputadorResponse>>(computadores);
+            return Ok(computadoresResponse);
         }
 
-        // GET: api/Computador/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(Guid id)
         {
-            return "value";
+            var computador = await _computadorService.SelectAsync(id);
+            var computadorResponse = _mapper.Map<ComputadorResponse>(computador);
+            if(computadorResponse != null) return Ok(computadorResponse);
+            return NotFound();
         }
 
-        // POST: api/Computador
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] ComputadorCreateRequest computador)
         {
-        }
-
-        // PUT: api/Computador/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok();
         }
     }
 }

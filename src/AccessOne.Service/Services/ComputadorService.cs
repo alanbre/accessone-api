@@ -1,53 +1,44 @@
-﻿using AccessOne.Domain.Core.Bus;
-using AccessOne.Domain.Models;
+﻿using AccessOne.Domain.Models;
 using AccessOne.Domain.Interfaces;
-using AutoMapper;
 using System;
 using System.Collections.Generic;
-using AccessOne.Domain.Commands;
 using AccessOne.Service.Interfaces;
+using System.Threading.Tasks;
 
 namespace AccessOne.Service.Services
 {
     public class ComputadorService : IComputadorService
     {
-        private readonly IMapper _mapper;
         private readonly IComputadorRepository _computadorRepository;
-        private readonly IMediatorHandler Bus;
 
-        public ComputadorService(IMapper mapper, IComputadorRepository computadorRepository, IMediatorHandler bus)
+        public ComputadorService(IComputadorRepository computadorRepository)
         {
-            _mapper = mapper;
             _computadorRepository = computadorRepository;
-            Bus = bus;
         }
 
-        public IEnumerable<Computador> Select()
+        public async Task<List<Computador>> SelectAsync()
         {
-            return _computadorRepository.Select();
+            return await _computadorRepository.SelectAsync();
         }
 
-        public Computador Select(Guid id)
+        public async Task<Computador> SelectAsync(Guid id)
         {
-            return _computadorRepository.Select(id);
+            return await _computadorRepository.SelectAsync(id);
         }
 
-        public void Register(Computador obj)
+        public async Task<Computador> InsertAsync(Computador computador)
         {
-            var postCommand = _mapper.Map<RegisterNewComputadorCommand>(obj);
-            Bus.SendCommand(postCommand);
+            return await _computadorRepository.InsertAsync(computador);
         }
 
-        public void Update(Computador obj)
+        public async Task<Computador> UpdateAsync(Computador computador)
         {
-            var updateCommand = _mapper.Map<UpdateComputadorCommand>(obj);
-            Bus.SendCommand(updateCommand);
+            return await _computadorRepository.UpdateAsync(computador);
         }
 
-        public void Remove(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            var removeCommand = new RemoveComputadorCommand(id);
-            Bus.SendCommand(removeCommand);
+            return await _computadorRepository.DeleteAsync(id);
         }
 
         public void Dispose()

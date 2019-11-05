@@ -18,11 +18,11 @@ namespace AccessOne.Domain.Models
 
         protected Computador() { }
 
-        public string Nome { get; private set; }
-        public string Ip { get; private set; }
-        public int Disco { get; private set; }
-        public int Memoria { get; private set; }
-        public Grupo Grupo { get; private set; }
-        public ICollection<Comando> Comandos { get; private set; }
+        public string Nome { get; protected set; }
+        public string Ip { get; protected set; }
+        public int Disco { get; protected set; }
+        public int Memoria { get; protected set; }
+        public Grupo Grupo { get; protected set; }
+        public ICollection<Comando> Comandos { get; protected set; }
     }
 }

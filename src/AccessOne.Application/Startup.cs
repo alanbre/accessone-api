@@ -1,6 +1,7 @@
-﻿using AccessOne.Infra.CrossCutting.IoC;
+﻿using AccessOne.Application.Configurations;
+using AccessOne.Infra.CrossCutting.IoC;
 using AccessOne.Infra.Data.Context;
-using MediatR;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -23,12 +24,6 @@ namespace AccessOne.Application
                 .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
 
-            //if (env.IsDevelopment())
-            //{
-            //    builder.AddUserSecrets<Startup>();
-            //}
-
-            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
@@ -45,11 +40,9 @@ namespace AccessOne.Application
             }
             ).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddMediatR(typeof(Startup));
+            services.AddAutoMapperSetup();
 
             RegisterServices(services);
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
