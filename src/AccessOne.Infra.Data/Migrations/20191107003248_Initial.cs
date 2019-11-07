@@ -28,7 +28,7 @@ namespace AccessOne.Infra.Data.Migrations
                     Ip = table.Column<string>(nullable: false),
                     EspacoEmDisco = table.Column<int>(nullable: false),
                     Memoria = table.Column<int>(nullable: false),
-                    GrupoId = table.Column<Guid>(nullable: true)
+                    GrupoId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,7 +38,7 @@ namespace AccessOne.Infra.Data.Migrations
                         column: x => x.GrupoId,
                         principalTable: "Grupo",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

@@ -12,7 +12,17 @@ namespace AccessOne.Service.AutoMapper
             CreateMap<GrupoCreateRequest, Grupo>()
                 .ConstructUsing(g => new Grupo(Guid.NewGuid(), g.Nome))
                 .ForMember(x => x.Id, opt => opt.Ignore());
+
             CreateMap<GrupoUpdateRequest, Grupo>();
+
+            CreateMap<ComputadorCreateRequest, Computador>()
+                .ConstructUsing(c => new Computador(Guid.NewGuid(), c.Nome, c.Ip, c.Disco, c.Memoria, c.Grupo))
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.Comandos, opt => opt.Ignore())
+                .ForMember(x => x.GrupoId, opt => opt.Ignore());
+
+            CreateMap<ComputadorUpdateRequest, Computador>()
+                .ForMember(x => x.Comandos, opt => opt.Ignore());
         }
     }
 }

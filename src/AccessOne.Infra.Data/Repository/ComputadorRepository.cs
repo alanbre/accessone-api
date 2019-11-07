@@ -18,12 +18,12 @@ namespace AccessOne.Infra.Data.Repository
 
         public override async Task<List<Computador>> SelectAsync()
         {
-            return await DbSet.Include(c => c.Grupo).ToListAsync();
+            return await DbSet.Include(c => c.Grupo).AsNoTracking().ToListAsync();
         }
 
         public override async Task<Computador> SelectAsync(Guid id)
         {
-            return await DbSet.Include(c => c.Grupo).FirstOrDefaultAsync(c => c.Id == id);
+            return await DbSet.Include(c => c.Grupo).AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

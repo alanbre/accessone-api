@@ -12,5 +12,6 @@ namespace AccessOne.Service.Interfaces
         Task<Computador> InsertAsync(Computador computador);
         Task<Computador> UpdateAsync(Computador computador);
         Task<bool> DeleteAsync(Guid id);
+        Task<bool> Exists(Guid id);
     }
 }

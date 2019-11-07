@@ -25,9 +25,10 @@ namespace AccessOne.Infra.Data.Mapping
 
             builder.Property(c => c.Memoria)
                     .HasColumnName("Memoria");
-
-
-            builder.HasMany(c => c.Comandos).WithOne(cm => cm.Computador).OnDelete(DeleteBehavior.Cascade);
+        
+            builder.HasMany(c => c.Comandos)
+                .WithOne(cm => cm.Computador)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

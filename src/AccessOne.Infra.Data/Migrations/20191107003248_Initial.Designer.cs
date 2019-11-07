@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessOne.Infra.Data.Migrations
 {
     [DbContext(typeof(AccessOneContext))]
-    [Migration("20191105013405_Initial")]
+    [Migration("20191107003248_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,7 +65,7 @@ namespace AccessOne.Infra.Data.Migrations
                         .HasColumnName("EspacoEmDisco")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("GrupoId")
+                    b.Property<Guid>("GrupoId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Ip")
@@ -117,7 +117,9 @@ namespace AccessOne.Infra.Data.Migrations
                 {
                     b.HasOne("AccessOne.Domain.Models.Grupo", "Grupo")
                         .WithMany()
-                        .HasForeignKey("GrupoId");
+                        .HasForeignKey("GrupoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

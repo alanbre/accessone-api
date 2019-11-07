@@ -15,11 +15,13 @@ namespace AccessOne.Application.Controllers
     public class ComputadorController : ControllerBase
     {
         private readonly IComputadorService _computadorService;
+        private readonly IGrupoService _grupoService;
         private readonly IMapper _mapper;
 
-        public ComputadorController(IComputadorService computadorService, IMapper mapper)
+        public ComputadorController(IComputadorService computadorService, IGrupoService grupoService, IMapper mapper)
         {
             _computadorService = computadorService;
+            _grupoService = grupoService;
             _mapper = mapper;
         }
 
@@ -37,14 +39,54 @@ namespace AccessOne.Application.Controllers
         {
             var computador = await _computadorService.SelectAsync(id);
             var computadorResponse = _mapper.Map<ComputadorResponse>(computador);
-            if(computadorResponse != null) return Ok(computadorResponse);
+            if (computadorResponse != null) return Ok(computadorResponse);
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ComputadorCreateRequest computador)
+        public async Task<IActionResult> Post([FromBody] ComputadorCreateRequest computadorRequest)
         {
-            return Ok();
+            var grupo = computadorRequest.Grupo;
+            if (computadorRequest.GrupoId != Guid.Empty)
+            {
+                grupo = await _grupoService.SelectAsync(computadorRequest.GrupoId);
+                if (grupo == null) return NotFound("Grupo não encontrado");
+                computadorRequest.Grupo = grupo;
+            }
+            var computador = _mapper.Map<Computador>(computadorRequest);
+            var createdComputador = await _computadorService.InsertAsync(computador);
+            var computadorResponse = _mapper.Map<ComputadorResponse>(createdComputador);
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+            var locationUri = $"{baseUrl}/api/computador/{computadorResponse.Id}";
+            return Created(locationUri, computadorResponse);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] ComputadorUpdateRequest computadorRequest)
+        {
+            if(!await _computadorService.Exists(computadorRequest.Id)) return NotFound();
+
+            if (computadorRequest.GrupoId != Guid.Empty && computadorRequest.GrupoId != null)
+            {
+                computadorRequest.Grupo = await _grupoService.SelectAsync((Guid)computadorRequest.GrupoId);
+                if (computadorRequest.Grupo == null) return NotFound("Grupo não encontrado");
+            }
+            var computador = _mapper.Map<Computador>(computadorRequest);
+            var updatedComputador = await _computadorService.UpdateAsync(computador);
+            var computadorResponse = _mapper.Map<ComputadorResponse>(updatedComputador);
+
+            return Ok(computadorResponse);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if(!await _computadorService.Exists(id)) return NotFound();
+            var deleted = await _computadorService.DeleteAsync(id);
+            if(deleted) return Ok();
+
+            return BadRequest();
         }
     }
 }

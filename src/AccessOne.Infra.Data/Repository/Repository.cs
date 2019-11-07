@@ -21,7 +21,7 @@ namespace AccessOne.Infra.Data.Repository
 
         public virtual async Task<List<TEntity>> SelectAsync()
         {
-            return await DbSet.ToListAsync();
+            return await DbSet.AsNoTracking().ToListAsync();
         }
 
         public virtual async Task<TEntity> SelectAsync(Guid id)

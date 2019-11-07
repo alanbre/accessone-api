@@ -21,10 +21,11 @@ namespace AccessOne.Infra.Data.Mapping
                     .HasColumnName("DataRegistro");
 
             builder.Property(c => c.DataExecucao)
-                    .IsRequired()
+                    .IsRequired(false)
                     .HasColumnName("DataExecucao");
 
             builder.Property(c => c.Retorno)
+                    .IsRequired(false)
                     .HasColumnName("Retorno");
         }
     }

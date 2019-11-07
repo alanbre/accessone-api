@@ -40,10 +40,15 @@ namespace AccessOne.Service.Services
         {
             return await _computadorRepository.DeleteAsync(id);
         }
+        public async Task<bool> Exists(Guid id)
+        {
+            return await _computadorRepository.SelectAsync(id) != null;
+        }
 
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
+
     }
 }

@@ -55,8 +55,6 @@ namespace AccessOne.Application.Controllers
         public async Task<IActionResult> Put([FromBody] GrupoUpdateRequest grupo)
         {
             var updatedGrupo = _mapper.Map<GrupoResponse>(await _grupoService.UpdateAsync(_mapper.Map<Grupo>(grupo)));
-            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-            var locationUri = baseUrl + "/api/grupo/" + updatedGrupo.Id;
             return Ok(updatedGrupo);
         }
 
@@ -64,7 +62,8 @@ namespace AccessOne.Application.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            if (await _grupoService.DeleteAsync(id)) return Ok();
+            var deleted = await _grupoService.DeleteAsync(id);
+            if (deleted) return Ok();
             return NotFound();
         }
     }

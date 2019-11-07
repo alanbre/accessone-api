@@ -4,14 +4,16 @@ using AccessOne.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AccessOne.Infra.Data.Migrations
 {
     [DbContext(typeof(AccessOneContext))]
-    partial class AccessOneContextModelSnapshot : ModelSnapshot
+    [Migration("20191107140341_GrupoIdForeignKeyRequiredFalse")]
+    partial class GrupoIdForeignKeyRequiredFalse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,10 +32,11 @@ namespace AccessOne.Infra.Data.Migrations
                         .HasColumnName("ComandoStr")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ComputadorId")
+                    b.Property<Guid?>("ComputadorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DataExecucao")
+                        .IsRequired()
                         .HasColumnName("DataExecucao")
                         .HasColumnType("datetime2");
 
@@ -107,8 +110,7 @@ namespace AccessOne.Infra.Data.Migrations
                     b.HasOne("AccessOne.Domain.Models.Computador", "Computador")
                         .WithMany("Comandos")
                         .HasForeignKey("ComputadorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AccessOne.Domain.Models.Computador", b =>
