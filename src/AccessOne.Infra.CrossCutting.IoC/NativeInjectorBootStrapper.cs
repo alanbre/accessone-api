@@ -14,10 +14,12 @@ namespace AccessOne.Infra.CrossCutting.IoC
             // Service
             services.AddScoped<IComputadorService, ComputadorService>();
             services.AddScoped<IGrupoService, GrupoService>();
+            services.AddScoped<IComandoService, ComandoService>();
 
             // Infra Data
             services.AddScoped<IComputadorRepository, ComputadorRepository>();
             services.AddScoped<IGrupoRepository, GrupoRepository>();
+            services.AddScoped<IComandoRepository, ComandoRepository>();
 
             services.AddScoped<AccessOneContext>();
         }

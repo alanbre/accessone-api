@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AccessOne.Application.Controllers
@@ -16,13 +17,44 @@ namespace AccessOne.Application.Controllers
     {
         private readonly IComputadorService _computadorService;
         private readonly IGrupoService _grupoService;
+        private readonly IComandoService _comandoService;
         private readonly IMapper _mapper;
 
-        public ComputadorController(IComputadorService computadorService, IGrupoService grupoService, IMapper mapper)
+        public ComputadorController(IComputadorService computadorService, IGrupoService grupoService, IComandoService comandoService, IMapper mapper)
         {
             _computadorService = computadorService;
             _grupoService = grupoService;
             _mapper = mapper;
+            _comandoService = comandoService;
+        }
+
+        [HttpGet]
+        [Route("{id}/comando")]
+        public async Task<IActionResult> GetComandos(Guid id)
+        {
+            var comandos = await _comandoService.SelectByComputador(id);
+            var comandosResponse = _mapper.Map<List<ComandoResponse>>(comandos);
+            return Ok(comandosResponse);
+        }
+
+        [HttpPost]
+        [Route("{id}/comando")]
+        public async Task<IActionResult> PostComando([FromBody] ComandoCreateRequest comandoRequest, [FromRoute] Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
+            }
+
+            if (!await _computadorService.Exists(id)) return NotFound("Computador não existente na base de dados");
+
+            comandoRequest.Computador = await _computadorService.SelectAsync(id);
+            var comando = _mapper.Map<Comando>(comandoRequest);
+            var createdComando = await _comandoService.InsertAsync(comando);
+            var comandoResponse = _mapper.Map<ComandoResponse>(comando);
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+            var locationUri = $"{baseUrl}/api/computador/{comandoResponse.Id}";
+            return Created(locationUri, comandoResponse);
         }
 
         [HttpGet]
@@ -64,7 +96,7 @@ namespace AccessOne.Application.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] ComputadorUpdateRequest computadorRequest)
         {
-            if(!await _computadorService.Exists(computadorRequest.Id)) return NotFound();
+            if (!await _computadorService.Exists(computadorRequest.Id)) return NotFound();
 
             if (computadorRequest.GrupoId != Guid.Empty && computadorRequest.GrupoId != null)
             {
@@ -82,9 +114,9 @@ namespace AccessOne.Application.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            if(!await _computadorService.Exists(id)) return NotFound();
+            if (!await _computadorService.Exists(id)) return NotFound();
             var deleted = await _computadorService.DeleteAsync(id);
-            if(deleted) return Ok();
+            if (deleted) return Ok();
 
             return BadRequest();
         }

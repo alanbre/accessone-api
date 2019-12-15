@@ -11,8 +11,8 @@ namespace AccessOne.Service.AutoMapper
             CreateMap<Grupo, GrupoResponse>();
 
             CreateMap<Computador, ComputadorResponse>();
-                // .ForMember(cr => cr.Grupo, opt =>
-                //     opt.MapFrom(src => new GrupoResponse{Id = src.Grupo.Id, Nome = src.Grupo.Nome}));
+
+            CreateMap<Comando, ComandoResponse>();
         }
     }
 }

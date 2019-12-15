@@ -23,6 +23,13 @@ namespace AccessOne.Service.AutoMapper
 
             CreateMap<ComputadorUpdateRequest, Computador>()
                 .ForMember(x => x.Comandos, opt => opt.Ignore());
+
+            CreateMap<ComandoCreateRequest, Comando>()
+                .ConstructUsing(c => new Comando(Guid.NewGuid(), c.ComandoStr, c.Computador))
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.DataExecucao, opt => opt.Ignore())
+                .ForMember(x => x.DataRegistro, opt => opt.Ignore())
+                .ForMember(x => x.Retorno, opt => opt.Ignore());
         }
     }
 }
